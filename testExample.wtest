@@ -1,9 +1,53 @@
-import example.pepita
+import naves.*
 
-describe "group of tests for pepita" {
-
-  test "pepita has initial energy" {
-    assert.equals(100, pepita.energy())
+describe "tests naves" {
+  test "Preparar la nave y comprobar si esta tranquila y si no es roja" {
+    const baliza = new NavesBaliza()
+    baliza.prepararViaje()
+    assert.that(baliza.estaTranquila())
+  }
+  test "Preparar la nave y comprobar si no esta tranquila y si es roja" {
+    const baliza = new NavesBaliza()
+    baliza.prepararViaje()
+    baliza.cambiarColorDeBaliza("rojo")
+    assert.notThat(baliza.estaTranquila())
+  }
+  test "baliza tiene poca actividad si no cambio de color" {
+    const baliza = new NavesBaliza()
+    assert.that(baliza.tienePocaActividad())
+  }
+  test "baliza recibirAmenaza va al sol y se pone roja" {
+    const baliza = new NavesBaliza()
+    baliza.recibirAmenaza()
+    assert.equals(10, baliza.direccion())
+    assert.that(baliza.esRoja())
   }
 
+  test "Cargar raciones de comida y de bebida"{
+    const pasajeros = new NavesDePasajeros(pasajeros = 10)
+    pasajeros.cargarComida(100)
+    pasajeros.cargarBebida(150)
+    assert.that(pasajeros.tienePocaActividad())
+  }
+  test "pasajeros tiene poca actividad" {
+    const pasajeros = new NavesDePasajeros(pasajeros = 10)
+    pasajeros.repartirComida(20)
+    assert.that(pasajeros.tienePocaActividad())
+    pasajeros.repartirComida(40)
+    assert.notThat(pasajeros.tienePocaActividad())
+  }
+  test "hospital esta tranquila con quirofano preparado" {
+    const hospital = new NaveHospital()
+    hospital.cargarCombustible(5000)
+    hospital.acelerar(5000)
+    hospital.tieneQuirofanoPreparado(true)
+    assert.that(hospital.estaTranquila())
+  }
+  test "combate tranquila si misiles plegados" {
+    const combate = new NavesDeCombate()
+    combate.cargarCombustible(5000)
+    combate.acelerar(5000)
+    combate.misilesPlegados()
+    assert.that(combate.estaTranquila())
+  }
 }
